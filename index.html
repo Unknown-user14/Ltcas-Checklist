@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LTCAS Checklist</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #fff;
+      padding: 20px;
+      font-size: 15px;
+      margin: 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 20px;
+    }
+    th, td {
+      border: 1px solid #000;
+      padding: 8px;
+      text-align: left;
+      vertical-align: top;
+    }
+    th {
+      background-color: #cce5ff;
+    }
+    input, textarea, select {
+      width: 100%;
+      box-sizing: border-box;
+      font-size: 14px;
+      padding: 5px;
+    }
+    input:invalid, select:invalid {
+      border: 2px solid red;
+    }
+    h1 {
+      text-align: center;
+      font-size: 24px;
+      font-weight: bold;
+      margin: 20px 0;
+      background-color: #007bff;
+      color: white;
+      padding: 10px;
+      border-radius: 4px;
+    }
+    @media screen and (max-width: 768px) {
+      input, select, textarea {
+        font-size: 14px;
+      }
+    }
+    .submit-button-container {
+      text-align: center;
+      margin-top: 20px;
+    }
+    button[type="submit"] {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      padding: 10px 40px;
+      font-size: 20px;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+    button[type="submit"]:hover {
+      background-color: #0056b3;
+    }
+    .footer {
+      text-align: right;
+      margin-top: 30px;
+      padding-right: 90px;
+    }
+  </style>
+</head>
+<body>
+
+  <form id="ltcas-form">
+    <h1>Check List for LTCAS</h1>
+
+    <table>
+      <tr><th colspan="2">Details</th></tr>
+      <tr><td>Date</td><td><input type="date" name="date" required></td></tr>
+      <tr><td>Loco ID</td><td><input type="text" name="loco_id" required></td></tr>
+      <tr><td>Shed Name</td><td><input type="text" name="shed_name" required></td></tr>
+      <tr><td>Loco Type</td><td><input type="text" name="loco_type" required></td></tr>
+      <tr><td>Loco Sub Type</td><td><input type="text" name="loco_sub_type" required></td></tr>
+      <tr><td>Brake Interface Make (MAB672/CCB/E70)</td><td><input type="text" name="brake_interface" required></td></tr>
+    </table>
+
+    <table>
+      <tr>
+        <th>Sl.No.</th>
+        <th>Activity Details</th>
+        <th>Observation Status</th>
+        <th>Remarks</th>
+      </tr>
+      <script>
+        const activities = [...Array(28).keys()].map(i => i + 1);
+        const details = [
+          "Verify the tightness of the Speed Sensor 1 connector",
+          "Verify the tightness of the Speed Sensor 2 connector",
+          "Check the RFID Reader 1 connector tightness",
+          "Check the RFID Reader 2 connector tightness",
+          "Check the DMI 1 unit connector tightness",
+          "Check the DMI 2 unit connector tightness",
+          "Check the Radio unit 1 connector tightness",
+          "Check the Radio unit 2 connector tightness",
+          "Check the LTCAS control unit connectors tightness",
+          "Check the Speed sensor functionality by moving the loco with help of shunter and write down the speed and Both sensors rpm should be equal",
+          "Check the GPS time stamps on DMI and both should have the same time stamp",
+          "Check the Radio 1 Power status on DMI (<2W)",
+          "Check the Radio 2 Power status on DMI (<2W)",
+          "Verify Reader 1 Health status",
+          "Verify Reader 2 Health status",
+          "Verify Radio 1 Health status",
+          "Verify Radio 2 Health status",
+          "Verify AICM module Health status",
+          "Verify the MRPR pressure on DMI and Gauge",
+          "Verify the BP pressure on DMI and Gauge",
+          "Verify the BC1 pressure on DMI and Gauge",
+          "Verify the BC2 pressure on DMI and Gauge",
+          "BIU health status",
+          "Ensure the Wheel Diameter Value from shed and same to be configured and mention the configured value",
+          "Verify the available keys on DMI",
+          "Write down the check sum details and ensure the check sums should match as per below RDSO and Write the check sum details from DMI<br><img src='info table.png' alt='Info Table' style='max-width: 100%; height: auto;'>",
+          "Check the reader why swiping the tag whether it is reading or not",
+          "Conduct Self Brake Test and it should be success after test (Success/Fail)"
+        ];
+
+        const subFields = {
+          10: "SS1 rpm: <input type='text' name='ss1_rpm' required> SS2 rpm: <input type='text' name='ss2_rpm' required>",
+          11: "GPS1 Time: <input type='text' name='gps1_time' required> GPS2 Time: <input type='text' name='gps2_time' required>",
+          12: "Rev PWR: <input type='text' name='rev_pwr' required> FW PWR: <input type='text' name='fw_pwr' required>",
+          13: "Rev PWR: <input type='text' name='rev_pwr2' required> FW PWR: <input type='text' name='fw_pwr2' required>",
+          19: "MRPR on DMI: <input type='text' name='mrpr_dmi' required> mrpr on Gauge: <input type='text' name='mrpr_gauge' required>",
+          20: "BP on DMI: <input type='text' name='bp_dmi' required> bp on Gauge: <input type='text' name='bp_gauge' required>",
+          21: "BC1 on DMI: <input type='text' name='bc1_dmi' required> bc1 on Gauge: <input type='text' name='bc1_gauge' required>",
+          22: "BC2 on DMI: <input type='text' name='bc2_dmi' required> bc2 on Gauge: <input type='text' name='bc2_gauge' required>",
+          24: "Wheel Dia 1: <input type='text' name='wheel_dia_1' required> Wheel Dia 2: <input type='text' name='wheel_dia_2' required>",
+          25: "Key Count: <input type='text' name='key_count' required>",
+          26: "LVCC: <input type='text' name='lvcc' required> LEVL: <input type='text' name='levl' required> DMI: <input type='text' name='dmi' required>"
+        };
+
+        for (let i = 0; i < activities.length; i++) {
+          const sub = subFields[i + 1] ? `<div>${subFields[i + 1]}</div>` : '';
+          const obs = `<select name="status_${i + 1}" required>
+                        <option value="">Select</option>
+                        <option value="Ok">Ok</option>
+                        <option value="Not Ok">Not Ok</option>
+                        <option value="Reading ok">Reading ok</option>
+                        <option value="Not reading">Not reading</option>
+                        <option value="Success">Success</option>
+                        <option value="Fail">Fail</option>
+                      </select>${sub}`;
+          document.write(`<tr>
+            <td>${(i + 1).toString().padStart(2, '0')}</td>
+            <td>${details[i]}</td>
+            <td>${obs}</td>
+            <td><textarea name="remarks_${i + 1}" optional></textarea></td>
+          </tr>`);
+        }
+      </script>
+    </table>
+
+    <table>
+      <tr><td>Signature of Service Engineer</td><td><input type="text" name="signature" required></td></tr>
+    </table>
+
+    <div class="submit-button-container">
+      <button type="submit">Submit</button>
+    </div>
+  </form>
+
+  <script>
+    document.getElementById("ltcas-form").addEventListener("submit", function(e) {
+      e.preventDefault();
+      const form = e.target;
+      const required = form.querySelectorAll("input[required], select[required]");
+      for (let field of required) {
+        if (!field.value) {
+          alert("Please fill all required fields before submitting.");
+          field.focus();
+          return;
+        }
+      }
+      const data = new FormData(form);
+      fetch("https://script.google.com/macros/s/YOUR_SCRIPT_ID/exec", {
+        method: "POST",
+        body: data
+      })
+      .then(response => response.text())
+      .then(result => {
+        alert("Form submitted successfully.");
+        form.reset();
+      })
+      .catch(error => {
+        alert("Error submitting form.");
+        console.error("Submission error:", error);
+      });
+    });
+  </script>
+
+  <div class="footer">    
+    <p>If Any Issue Faced || Contact:Kiranmayeer@medha.com</p>
+    <p>Web Page of Medha Servo Drives Pvt.Ltd. 1/1</p>
+  </div>
+</body>
+</html>
