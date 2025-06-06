@@ -176,6 +176,7 @@
     document.getElementById("ltcas-form").addEventListener("submit", function(e) {
       e.preventDefault();
       const form = e.target;
+
       const required = form.querySelectorAll("input[required], select[required]");
       for (let field of required) {
         if (!field.value) {
@@ -184,9 +185,14 @@
           return;
         }
       }
-      const data = new FormData(form);
+
+      const data = new URLSearchParams(new FormData(form));
+
       fetch("https://script.google.com/macros/s/AKfycbzJb9dpBAYcseAO4yvFS-oJP7mctAVN-wcHPvI9EliqKbBBfME0SF1liibegb0FY2/exec", {
         method: "POST",
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
         body: data
       })
       .then(response => response.text())
@@ -202,8 +208,8 @@
   </script>
 
   <div class="footer">    
-    <p>If Any Issue Faced || Contact:Kiranmayeer@medha.com</p>
-    <p>Web Page of Medha Servo Drives Pvt.Ltd. 1/1</p>
+    <p>If Any Issue Faced || Contact: Kiranmayeer@medha.com</p>
+    <p>Web Page of Medha Servo Drives Pvt. Ltd. 1/1</p>
   </div>
 </body>
 </html>
