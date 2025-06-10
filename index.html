@@ -173,41 +173,41 @@
   </form>
 
   <script>
-    document.getElementById("ltcas-form").addEventListener("submit", function(e) {
-      e.preventDefault();
-      const form = e.target;
+  document.getElementById("ltcas-form").addEventListener("submit", function(e) {
+    e.preventDefault();
+    const form = e.target;
 
-      const required = form.querySelectorAll("input[required], select[required]");
-      for (let field of required) {
-        if (!field.value) {
-          alert("Please fill all required fields before submitting.");
-          field.focus();
-          return;
-        }
+    const required = form.querySelectorAll("input[required], select[required]");
+    for (let field of required) {
+      if (!field.value) {
+        alert("Please fill all required fields.");
+        field.focus();
+        return;
       }
+    }
 
-      const data = new URLSearchParams(new FormData(form));
+    // ✅ Send data as URL encoded — this is what Apps Script understands
+    const formData = new URLSearchParams(new FormData(form));
 
-      fetch("https://script.google.com/macros/s/AKfycbwJ5RMUfgyhMuOY38UJZUCIHQbKSNFCD7oVBMstbglJrxkiMZ3lameiKDhPdGSJQSY-3w/exec ", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        body: data
-      })
-      .then(response => response.text())
-      .then(result => {
-        alert("Form submitted successfully.");
-        form.reset();
-      })
-      .catch(error => {
-        alert("Error submitting form.");
-        console.error("Submission error:", error);
-      });
+    fetch("https://script.google.com/macros/s/AKfycbwCXX7UAk_tVnSojd-XgVsteqGhK3SWqfE2yKsEHUj0n0ckIj8RqYjJm2mkeQg2ul9G/exec", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded"
+      },
+      body: formData
+    })
+    .then(response => response.text())
+    .then(result => {
+      alert("Form submitted successfully!");
+      form.reset();
+    })
+    .catch(error => {
+      alert("Error submitting form.");
+      console.error("Submission error:", error);
     });
-  </script>
-
-  <div class="footer">    
+  });
+</script>
+    <div class="footer">    
     <p>If Any Issue Faced || Contact: Kiranmayeer@medha.com</p>
     <p>Web Page of Medha Servo Drives Pvt. Ltd. 1/1</p>
   </div>
